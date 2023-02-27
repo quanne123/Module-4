@@ -1,30 +1,31 @@
 package com.example;
 
+import com.example.repository.ITranslateRepository;
+import com.example.repository.TranslateRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
 @Controller
 public class TranslateController {
-    private static final Map<String, String> listMap = new HashMap<>();
+    @Autowired
+    private ITranslateRepository translateRepository = new TranslateRepository();
 
-    static {
-        listMap.put("love", "tình yêu");
-        listMap.put("friendship", "tình bạn");
-        listMap.put("comradeship", "tình đồng chí");
-    }
+
 
     @GetMapping("/search")
-    public String search(@RequestParam(required = false) String word, Model model) {
-        if (word == null) {
-            model.addAttribute("search", "can't search");
-            return "/search";
-        }
-        model.addAttribute("search",listMap.get(word));
+   public String toHome(){
         return "/search";
     }
 
+    @PostMapping("/search")
+    public ModelAndView toTranslate(@RequestParam String word){
+        return new ModelAndView("/search","search",translateRepository.lookUp(word));
+    }
 }

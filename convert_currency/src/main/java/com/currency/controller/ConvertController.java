@@ -14,12 +14,12 @@ public class ConvertController {
     private ConvertService convertService;
 
     @GetMapping
-    public String toConvert(){
-        return "/index";
+    public String toConvert() {
+        return "/convert";
     }
 
     @PostMapping("/convert")
-    public ModelAndView toResult(@RequestParam String amount,@RequestParam String rate){
-        return new ModelAndView("/index","result",convertService.convert(Double.parseDouble(amount),Double.parseDouble(rate)));
+    public ModelAndView toResult(@RequestParam String amount, @RequestParam String rate) {
+        return new ModelAndView("/convert", "result", convertService.convert(Double.parseDouble(amount), Double.parseDouble(rate)));
     }
 }
